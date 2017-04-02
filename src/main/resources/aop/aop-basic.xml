@@ -4,15 +4,35 @@
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
-	
-	
-	<bean id="accountService" class="aop.AccountService"/>
-	<bean id="simpleProfiler" class="aop.SimpleProfiler"/>
+
+
+	<bean id="accountService" class="aop.AccountService" />
+	<bean id="simpleProfiler" class="aop.SimpleProfiler" />
+	<bean id="securityCheck" class="aop.SecurityCheck" />
+	<bean id="postCheanUp" class="aop.PostCleanUp" />
+	<bean id="exceptionHandler" class="aop.ExceptionHandler" />
 	<aop:aspectj-autoproxy />
 	<aop:config>
 		<aop:aspect ref="simpleProfiler">
 			<aop:pointcut id="accountExecution" expression="execution(* aop.AccountService.*(..))" />
 			<aop:around pointcut-ref="accountExecution" method="profile" />
+		</aop:aspect>
+		<aop:aspect ref="securityCheck">
+			<aop:pointcut expression="execution(* aop.AccountService.*(..))" id="accountExecution" />
+			<!-- authenticate before invocation -->
+			<aop:before method="doAuth" pointcut-ref="accountExecution" />
+		</aop:aspect>
+		
+		<aop:aspect ref="postCheanUp">
+			<aop:pointcut expression="execution(* aop.AccountService.*(..))" id="accountExecution" />
+			<!-- authenticate before invocation -->
+			<aop:after method="cleanUp" pointcut-ref="accountExecution" />
+		</aop:aspect>
+		
+		<aop:aspect ref="exceptionHandler">
+			<aop:pointcut expression="execution(* aop.AccountService.*(..))" id="accountExecution" />
+			<!-- authenticate before invocation -->
+			<aop:after-throwing method="handleException" pointcut-ref="accountExecution" throwing="error"/>
 		</aop:aspect>
 	</aop:config>
 

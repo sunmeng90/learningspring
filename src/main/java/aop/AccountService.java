@@ -9,4 +9,10 @@ public class AccountService {
 		System.out.printf("transferring $%f from %s to %s\n", amount, fromAccount, toAccount);
 		return true;
 	}
+	
+	
+	public void accountThrowing() throws Exception{
+		throw new Exception("Account balance is 0");
+	}
+	
 }

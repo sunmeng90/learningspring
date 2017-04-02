@@ -11,7 +11,8 @@ public class SimpleProfiler {
 			return call.proceed();
 		}finally{
 			clock.stop();
-			System.out.println(clock.prettyPrint());
+			//System.out.println(clock.prettyPrint());
+			System.out.println(clock.getTotalTimeSeconds());
 		}
 		
 	}
