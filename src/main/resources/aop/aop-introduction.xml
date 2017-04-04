@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+	<bean id="accountService" class="aop.introduction.AccountService" />
+	<bean id="usageTracking" class="aop.introduction.UsageTracking" />
+	<aop:aspectj-autoproxy />
+	<aop:config>
+		<aop:aspect ref="usageTracking">
+			<aop:declare-parents types-matching="aop.introduction.AccountService" implement-interface="aop.introduction.UsageTracked"
+				default-impl="aop.introduction.UsageTrackedImpl" />
+			<aop:pointcut expression="execution(* aop.introduction.AccountService.*(..)) and this(usageTracked)" id="accountExecution" />
+			<aop:before method="recordUsage" pointcut-ref="accountExecution" />
+		</aop:aspect>
+	</aop:config>
+</beans>

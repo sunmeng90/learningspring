@@ -6,31 +6,31 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-	<bean id="accountService" class="aop.AccountService" />
-	<bean id="simpleProfiler" class="aop.SimpleProfiler" />
-	<bean id="securityCheck" class="aop.SecurityCheck" />
-	<bean id="postCheanUp" class="aop.PostCleanUp" />
-	<bean id="exceptionHandler" class="aop.ExceptionHandler" />
+	<bean id="accountService" class="aop.basic.AccountService" />
+	<bean id="simpleProfiler" class="aop.basic.SimpleProfiler" />
+	<bean id="securityCheck" class="aop.basic.SecurityCheck" />
+	<bean id="postCheanUp" class="aop.basic.PostCleanUp" />
+	<bean id="exceptionHandler" class="aop.basic.ExceptionHandler" />
 	<aop:aspectj-autoproxy />
 	<aop:config>
 		<aop:aspect ref="simpleProfiler">
-			<aop:pointcut id="accountExecution" expression="execution(* aop.AccountService.*(..))" />
+			<aop:pointcut id="accountExecution" expression="execution(* aop.basic.AccountService.*(..))" />
 			<aop:around pointcut-ref="accountExecution" method="profile" />
 		</aop:aspect>
 		<aop:aspect ref="securityCheck">
-			<aop:pointcut expression="execution(* aop.AccountService.*(..))" id="accountExecution" />
+			<aop:pointcut expression="execution(* aop.basic.AccountService.*(..))" id="accountExecution" />
 			<!-- authenticate before invocation -->
 			<aop:before method="doAuth" pointcut-ref="accountExecution" />
 		</aop:aspect>
 		
 		<aop:aspect ref="postCheanUp">
-			<aop:pointcut expression="execution(* aop.AccountService.*(..))" id="accountExecution" />
+			<aop:pointcut expression="execution(* aop.basic.AccountService.*(..))" id="accountExecution" />
 			<!-- authenticate before invocation -->
 			<aop:after method="cleanUp" pointcut-ref="accountExecution" />
 		</aop:aspect>
 		
 		<aop:aspect ref="exceptionHandler">
-			<aop:pointcut expression="execution(* aop.AccountService.*(..))" id="accountExecution" />
+			<aop:pointcut expression="execution(* aop.basic.AccountService.*(..))" id="accountExecution" />
 			<!-- authenticate before invocation -->
 			<aop:after-throwing method="handleException" pointcut-ref="accountExecution" throwing="error"/>
 		</aop:aspect>
