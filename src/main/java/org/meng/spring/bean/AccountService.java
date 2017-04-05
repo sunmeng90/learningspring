@@ -1,4 +1,4 @@
-package bean;
+package org.meng.spring.bean;
 
 public class AccountService {
 	public double getBalance(String accountNo){

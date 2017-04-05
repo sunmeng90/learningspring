@@ -6,14 +6,14 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-	<bean id="accountService" class="aop.introduction.AccountService" />
-	<bean id="usageTracking" class="aop.introduction.UsageTracking" />
+	<bean id="accountService" class="org.meng.spring.aop.introduction.AccountService" />
+	<bean id="usageTracking" class="org.meng.spring.aop.introduction.UsageTracking" />
 	<aop:aspectj-autoproxy />
 	<aop:config>
 		<aop:aspect ref="usageTracking">
-			<aop:declare-parents types-matching="aop.introduction.AccountService" implement-interface="aop.introduction.UsageTracked"
-				default-impl="aop.introduction.UsageTrackedImpl" />
-			<aop:pointcut expression="execution(* aop.introduction.AccountService.*(..)) and this(usageTracked)" id="accountExecution" />
+			<aop:declare-parents types-matching="org.meng.spring.aop.introduction.AccountService" implement-interface="org.meng.spring.aop.introduction.UsageTracked"
+				default-impl="org.meng.spring.aop.introduction.UsageTrackedImpl" />
+			<aop:pointcut expression="execution(* org.meng.spring.aop.introduction.AccountService.*(..)) and this(usageTracked)" id="accountExecution" />
 			<aop:before method="recordUsage" pointcut-ref="accountExecution" />
 		</aop:aspect>
 	</aop:config>

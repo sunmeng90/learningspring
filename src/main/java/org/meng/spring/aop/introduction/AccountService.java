@@ -1,4 +1,4 @@
-package aop.basic;
+package org.meng.spring.aop.introduction;
 
 public class AccountService {
 	public double getBalance(String accountNo){

@@ -1,4 +1,5 @@
-package aop.basic;
+package org.meng.spring.aop.basic;
+
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

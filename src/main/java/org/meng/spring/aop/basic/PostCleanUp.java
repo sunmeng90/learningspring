@@ -1,4 +1,5 @@
-package aop.basic;
+package org.meng.spring.aop.basic;
+
 import org.aspectj.lang.JoinPoint;
 
 public class PostCleanUp {
