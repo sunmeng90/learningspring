@@ -2,3 +2,6 @@
 /bin/
 /build/
 /.settings/
+/.idea/
+.impl
+.tmp
