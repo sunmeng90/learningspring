@@ -36,4 +36,23 @@ public class EmpServiceTest {
 
 	}
 
+
+	@Test
+	public void testCreateEmpWithTxNew() {
+
+		Emp emp = new Emp();
+		emp.setEmpNo(10000026);
+		emp.setFirstName("t_first");
+		emp.setLastName("t_last");
+		emp.setBirthday(LocalDate.now());
+		emp.setGender("F");
+
+		Account account = new Account();
+		account.setAccountNo("123456123456123456123456123456123456");
+		account.setEmpNo(1000003);
+
+		empService.createEmpWithAccountInNewTx(emp, account);
+
+	}
+
 }

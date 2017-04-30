@@ -18,7 +18,6 @@ public class FinanceDao {
     @Qualifier("namedJdbcTemplate")
     NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    @Transactional(isolation=Isolation.DEFAULT, propagation=Propagation.REQUIRED)
     public int insertBankAccountForEmp(Account account){
     	final Map<String, Object> paramMap = new HashMap<String, Object>();
     	paramMap.put("account_no", account.getAccountNo());
