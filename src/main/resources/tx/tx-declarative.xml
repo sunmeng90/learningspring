@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<!-- this is the service object that we want to make transactional -->
-	<bean id="empService" class="org.meng.spring.tx.declarative.EmpServiceImpl" />
+	<bean id="empServiceMock" class="org.meng.spring.tx.declarative.EmpServiceImplMock" />
 
 	<!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean below) -->
 	<tx:advice id="txAdvice" transaction-manager="txManager">
@@ -25,7 +25,7 @@
 
 	<!-- ensure that the above transactional advice runs for any execution of an operation defined by the FooService interface -->
 	<aop:config>
-		<aop:pointcut id="empServiceOperation" expression="execution(* org.meng.spring.tx.declarative.EmpService.*(..))" />
+		<aop:pointcut id="empServiceOperation" expression="execution(* org.meng.spring.tx.declarative.EmpServiceImplMock.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="empServiceOperation" />
 	</aop:config>
 

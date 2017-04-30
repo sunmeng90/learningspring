@@ -6,7 +6,7 @@ public interface EmpService {
 
 	Emp getEmp(String firstName, String lastName);
 
-	void insertEmp(Emp Eemp);
+	void createEmp(Emp Eemp, Account account);
 
 	void updateEmp(Emp emp);
 

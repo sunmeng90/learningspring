@@ -1,36 +1,37 @@
 package org.meng.spring.tx.declarative;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("empService")
 public class EmpServiceImpl implements EmpService {
-	/* (non-Javadoc)
-	 * @see org.meng.spring.tx.declarative.EmpService#getEmp(int)
-	 */
+	@Autowired
+	EmpDao empDao;
+	@Autowired
+	FinanceService financeService;
+
 	@Override
 	public Emp getEmp(int empNo) {
-		throw new UnsupportedOperationException();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.meng.spring.tx.declarative.EmpService#getEmp(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public Emp getEmp(String firstName, String lastName) {
-		throw new UnsupportedOperationException();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.meng.spring.tx.declarative.EmpService#insertEmp(org.meng.spring.tx.declarative.Emp)
-	 */
 	@Override
-	public void insertEmp(Emp Eemp) {
-		throw new UnsupportedOperationException();
+	public void createEmp(Emp emp, Account account) {
+		empDao.createEmp(emp);
+		financeService.createBankAccountForEmp(account);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.meng.spring.tx.declarative.EmpService#updateEmp(org.meng.spring.tx.declarative.Emp)
-	 */
 	@Override
 	public void updateEmp(Emp emp) {
-		throw new UnsupportedOperationException();
+		// TODO Auto-generated method stub
+
 	}
 
 }
