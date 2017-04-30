@@ -33,14 +33,26 @@ public class EmpService{
 	public void createEmpWithAccountInNewTx(Emp emp, Account account) {
 		empDao.createEmp(emp);
 		try{
-			financeService.createBankAccountForEmpInNewTx(account);
+			financeService.createBankAccountForEmpInNewTx(account);//catch inner transaction, otherwise exception will be propagated to outer transaction
 		}catch(DataAccessException e){
 			System.out.println("Inner transaction throw exception");
 			e.printStackTrace();
 		}
 	}
 
-
+	@Transactional(isolation=Isolation.DEFAULT, propagation=Propagation.REQUIRED)
+	public void createEmpWithAccountInNestedTx(Emp emp, Account account){
+		empDao.createEmp(emp);
+		try{
+			financeService.createBankAccountForEmpInNestedTx(account);
+		}catch(DataAccessException e){
+			System.out.println("Nested transaction throw exception");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	public void updateEmp(Emp emp) {
 		// TODO Auto-generated method stub
 

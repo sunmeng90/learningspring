@@ -55,4 +55,21 @@ public class EmpServiceTest {
 
 	}
 
+	@Test
+	public void testCreateEmpInNestedTx() {
+
+		Emp emp = new Emp();
+		emp.setEmpNo(10000099);
+		emp.setFirstName("t_first");
+		emp.setLastName("t_last");
+		emp.setBirthday(LocalDate.now());
+		emp.setGender("F");
+
+		Account account = new Account();
+		account.setAccountNo("123456");
+		account.setEmpNo(1000003);
+
+		empService.createEmpWithAccountInNestedTx(emp, account);
+
+	}
 }
