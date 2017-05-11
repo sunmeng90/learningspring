@@ -2,6 +2,7 @@ package org.meng.spring.aop.basic;
 
 public class AccountService {
 	public double getBalance(String accountNo){
+		System.out.println("query account balance: ");
 		return Math.random() * 100000;
 	}
 

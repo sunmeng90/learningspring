@@ -50,8 +50,7 @@ public class EmpService{
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	
 	public void updateEmp(Emp emp) {
 		// TODO Auto-generated method stub

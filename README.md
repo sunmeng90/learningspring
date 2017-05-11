@@ -262,6 +262,15 @@ At the very lowest level exists the TransactionAwareDataSourceProxy class. This 
 The DataSourceTransactionManager handles all the transactional requirements if straight JDBC or Spring DAO is eing used in the application.  The DatasourceTransaction Manager works with a javax.sql.DataSource object. It ensures that the same Connection object is retrieved from the Datasource and used in a transction. If the transaction is successfully, the commit method is invoked on the Connection object. If the transaction is a failure, the rollback method will beused. In short, this transaction manger delegates the actual transaction processing to the database.
 
 
+####Hibernate Transaction
+
+Link: https://books.google.com/books?id=V35pqiCnD4YC&pg=PA258&lpg=PA258&dq=is+that+correct+spring+delegate+transaction+management+to+platform&source=bl&ots=kAzvxoTsO0&sig=62YHUTyTPY_IvNsfIbkSby4G6m8&hl=en&sa=X&ved=0ahUKEwis3-O2zKHTAhXEqVQKHeHGDPoQ6AEIRzAH#v=onepage&q=is%20that%20correct%20spring%20delegate%20transaction%20management%20to%20platform&f=false
+
+http://blog.csdn.net/trigl/article/details/50968079
+
+An important aspect of transaction management is defining the right transaction boundary for e.g when should a transaction start,when should it end,when data should be committed in DB and when it should be rolled back (in the case of exception)
+
+
 ####programmatic transaction management VS Declarative transaction management
 Spring provides consistent programming model in any environment from local transaction and global transaction.  
 
@@ -349,7 +358,7 @@ Spring's propagation types differ in how they behave in presence/absence of an e
 | SUPPORTS          | don't create a transaction, run method outside any transaction | use current transaction                                           |
 | REQUIRED(default) | create a new transaction                                       | use current transaction                                           |
 | REQUIRES_NEW      | create a new transaction                                       | suspend current transaction, create a new independent transaction |
-| NESTED            | create a new transaction                                       | create a new nested transaction                                   |
+| NESTED            | create a new transaction                                       | create a new nested transaction(savepoint)                                   |
 
 As for propagation types, REQUIRED/MANDATORY/SUPPORTS would be used when you want your code to be part of the current transaction, sharing its commit/rollback fate; NESTED would come into use in cases where you want to be able to rollback only parts of a bigger transaction; and finally REQUIRES_NEW is to be used when you want to do something totally unrelated to the current transaction.  
 The difference between REQUIRED, MANDATORY and SUPPORTS strives in how they behave when there is no existing transaction. MANDATORY acts as a sort of assert directive, ensuring there is an opened transaction. REQUIRED creates a new transaction, being safe to use outside any transaction. SUPPORTS rides along an existing transaction, but doesn't create a new one if none exists.
@@ -367,11 +376,18 @@ Nested
 PROPAGATION_NESTED uses a single physical transaction with multiple savepoints that it can roll back to. Such partial rollbacks allow an inner transaction scope to trigger a rollback for its scope, with the outer transaction being able to continue the physical transaction despite some operations having been rolled back. This setting is typically mapped onto JDBC savepoints, so will only work with JDBC resource transactions. See Spring’s DataSourceTransactionManager.
 
 
-
-
 ####Local and Global Tx
 * Local Transaction is resource specific transaction, it cannot work across multiple transactional resources  
 * Global Transaction is an application server managed transaction, allowing to work with different transactional resources (this might be two different database, database and message queue, etc)
+
+
+
+**TODO: TransactionInterceptor Spring AOP and TX**
+https://books.google.com/books?id=w6WYeZrQAQUC&pg=PA198&lpg=PA198&dq=spring+jdbc+transaction+delegate&source=bl&ots=_S3fjTD8wf&sig=aF9YywuSYm5Ul_6oGn3fetklJik&hl=en&sa=X&ved=0ahUKEwjyhoeD_aTTAhUI52MKHXf0AggQ6AEIMzAD#v=onepage&q=spring%20jdbc%20transaction%20delegate&f=false
+
+
+
+
 
 
 ##JDBC
