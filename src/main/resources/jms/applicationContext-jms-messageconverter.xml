@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+	<context:component-scan base-package="org.meng.spring.jms.messageconverter" />
+	<bean id="emailMessageConverter" class="org.meng.spring.jms.messageconverter.EmailMessageConverter" />
+
+	<!-- jmsTemplate -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="messageConverter" ref="emailMessageConverter" />
+	</bean>
+
+	<!-- spring's connection factory that hold and manage the real connection factory -->
+	<bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="targetConnectionFactory" />
+	</bean>
+
+	<!-- real connection factory by JMS vendor -->
+	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="trustedPackages">  
+        <list>  
+            <value>org.meng.spring.jms.messageconverter</value>  
+        </list>  
+    </property> 
+	</bean>
+	<!-- message queue destination -->
+	<bean id="emailQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg>
+			<value>emailQueue</value>
+		</constructor-arg>
+	</bean>
+	<bean id="emailMessageProducer" class="org.meng.spring.jms.messageconverter.EmailMessageProducer"/>
+	<!-- message listener -->
+	<bean id="emailMessageListener" class="org.meng.spring.jms.messageconverter.EmailMessageListener" />
+
+	<!-- listener container -->
+	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="destination" ref="emailQueue" />
+		<property name="messageListener" ref="emailMessageListener" />
+
+	</bean>
+
+</beans>
