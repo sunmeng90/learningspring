@@ -22,7 +22,6 @@ public class JMSTxLocalTest {
     @Test
     public void testSend() throws InterruptedException {
         messageProducer.sendMessage(queue, "Hello, Meng");
-
     }
 
 }
