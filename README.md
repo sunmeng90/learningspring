@@ -1,12 +1,12 @@
 #Learning Spring    
 
-overview 
------------------------------
+#overview 
+
 The Spring Framework is a lightweight solution and a potential one-stop-shop for building your enterprise-ready applications. Spring enables you to build applications from "plain old Java objects" (POJOs) and to apply enterprise services non-invasively to POJOs. The two basic core feature that Spring provides are Inversion of Control and AOP
 
-IoC
------------------------------
-bean declaration 
+#IoC
+
+**bean declaration**
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,7 +22,7 @@ bean declaration
 </beans>
 ```
 
-get bean 
+**get bean**
 ```java
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -38,12 +38,12 @@ public class Main {
 }
 ```
 
-AOP
------------------------------
-###Overview
+#AOP
+
+##Overview
 AOP aims to get rid of code tangling and scattering.
 
-###Terms in AoP:
+##Terms in AoP:
 * JoinPoint: A joinpoint is a point in the execution of the **application** where an aspect can be plugged in. This point could be a method being called, an exception being thrown, or even a field being modified.  
 * PointCut:  A pointcut definition matches one or more joinpoints at which advice should be woven.
 * Advice: the functionality we want to apply
@@ -51,14 +51,14 @@ AOP aims to get rid of code tangling and scattering.
 * Weaving: The process of appling an aspect to our system. linking aspects with other application types or objects to create an advised object. This can
 be done at compile time (using the AspectJ compiler, for example), load time, or at runtime. Spring AOP, like other pure Java AOP frameworks, performs weaving at runtime.
 
-###Advice Types:  
+##Advice Types:  
 
 * Before
 * After
 * AfterReturning
 * Around
 
-###Best Practices  
+##Best Practices  
 Define pointcut which matches all the method executions in AccountService. The execution expression are in format: execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-pattern(param-pattern)
 throws-pattern?)
 ```xml
@@ -103,14 +103,14 @@ Aspect configration:
 </aop:config>
 ```
 
-###Appling advice: 
+##Appling advice: 
 Runtimie Weaving
 
-###Advice ordering:  
+##Advice ordering:  
 When multiple advice needs to execute at the same join point (executing method) the ordering rules are:
 The highest precedence advice runs first "on the way in" (so given two pieces of before advice, the one with highest precedence runs first). "On the way out" from a join point, the highest precedence advice runs last (so given two pieces of after advice, the one with the highest precedence will run second).
 
-###Introduction:
+##Introduction:
 Introductions (known as inter-type declarations in AspectJ) enable an aspect to declare that advised objects implement a given interface, and to provide an implementation of that interface on behalf of those objects. In other words, An introduction allows you to add/declare new methods or attributes to the existing classes.
 e.g. There is a requirement to expose services invocation statistics, we can do it in this way:
 
@@ -394,8 +394,7 @@ https://books.google.com/books?id=w6WYeZrQAQUC&pg=PA198&lpg=PA198&dq=spring+jdbc
 
 
 
-JDBC
------------------------------
+#JDBC
 
 With Spring JDBC, it can greatly eliminate boilerplate code when using JDBC API. Comparision between plain JDBC and Spring JDBC:
 
@@ -498,18 +497,15 @@ public class EmpDao {
 ```
 
 ###JDBC batches
-
-
-
-//* * *
+//TODO
 
 ###schema-based AOP
 https://docs.spring.io/spring/docs/current/spring-framework-reference/html/aop.html
 
 
 
-Spring JMS
------------------------------
+#Spring JMS
+
 ###Messaging
 Messaging is a method of communication between software components or applications. A messaging system is a peer-to-peer facility: A messaging client can send messages to, and receive messages from, any other client. Each client connects to a messaging agent that provides facilities for creating, sending, receiving, and reading messages. Messaging enables distributed communication that is loosely coupled. A component sends a message to a destination, and the recipient can retrieve the message from the destination. However, the sender and the receiver do not have to be available at the same time in order to communicate. 
 
