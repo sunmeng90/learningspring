@@ -1,8 +1,11 @@
-<center> ***Learning Spring*** </center>
-#overview 
+#Learning Spring    
+
+overview 
+-----------------------------
 The Spring Framework is a lightweight solution and a potential one-stop-shop for building your enterprise-ready applications. Spring enables you to build applications from "plain old Java objects" (POJOs) and to apply enterprise services non-invasively to POJOs. The two basic core feature that Spring provides are Inversion of Control and AOP
 
-##IoC
+IoC
+-----------------------------
 bean declaration 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -35,7 +38,8 @@ public class Main {
 }
 ```
 
-##AOP
+AOP
+-----------------------------
 ###Overview
 AOP aims to get rid of code tangling and scattering.
 
@@ -390,7 +394,9 @@ https://books.google.com/books?id=w6WYeZrQAQUC&pg=PA198&lpg=PA198&dq=spring+jdbc
 
 
 
-##JDBC
+JDBC
+-----------------------------
+
 With Spring JDBC, it can greatly eliminate boilerplate code when using JDBC API. Comparision between plain JDBC and Spring JDBC:
 
 | Action                                                   | Spring | You |
@@ -495,27 +501,209 @@ public class EmpDao {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //* * *
 
 ###schema-based AOP
 https://docs.spring.io/spring/docs/current/spring-framework-reference/html/aop.html
+
+
+
+Spring JMS
+-----------------------------
+###Messaging
+Messaging is a method of communication between software components or applications. A messaging system is a peer-to-peer facility: A messaging client can send messages to, and receive messages from, any other client. Each client connects to a messaging agent that provides facilities for creating, sending, receiving, and reading messages. Messaging enables distributed communication that is loosely coupled. A component sends a message to a destination, and the recipient can retrieve the message from the destination. However, the sender and the receiver do not have to be available at the same time in order to communicate. 
+
+### JMS
+The Java Message Service is a Java API that allows applications to create, send, receive, and read messages.    
+The JMS API enables communication that is not only loosely coupled but also:  
+**Asynchronous**: A JMS provider can deliver messages to a client as they arrive; a client does not have to request messages in order to receive them.  
+**Reliable**: The JMS API can ensure that a message is delivered once and only once. Lower levels of reliability are available for applications that can afford to miss messages or to receive duplicate messages.
+
+###JMS Concepts
+-   A **JMS provider** is a messaging system that implements the JMS interfaces and provides administrative and control features. An implementation of the Java EE platform includes a JMS provider.
+
+-   **JMS clients** are the programs or components, written in the Java programming language, that produce and consume messages. Any Java EE application component can act as a JMS client.
+
+-   **Messages** are the objects that communicate information between JMS clients.
+
+-   **Administered objects** are preconfigured JMS objects created by an administrator for the use of clients. The two kinds of JMS administered objects are destinations and connection factories, described in [JMS Administered Objects](http://docs.oracle.com/javaee/6/tutorial/doc/bnceh.html#bncej).
+
+###Messaging Domains
+####Point-to-Point(PTP) Messaging Domain
+A point-to-point (PTP) product or application is built on the concept of message queues, senders, and receivers. Each message is addressed to a specific queue, and receiving clients extract messages from the queues established to hold their messages. Queues retain all messages sent to them until the messages are consumed or expire.  
+
+PTP messaging, illustrated below, has the following characteristics:  
+
+-   Each message has only one consumer.
+-   A sender and a receiver of a message have no timing dependencies. The receiver can fetch the message whether or not it was running when the client sent the message.
+-   The receiver acknowledges the successful processing of a message.
+Point-to-Point Messaging
+
+![Diagram of point-to-point messaging, showing Client 1 sending a message to a queue, and Client 2 consuming and acknowledging the message](doc/jms-pointToPoint.gif)
+
+#### Publish/Subscribe Messaging Domain
+
+In a **publish/subscribe** (pub/sub) product or application, clients address messages to a **topic**, which functions somewhat like a bulletin board. Publishers and subscribers are generally anonymous and can dynamically publish or subscribe to the content hierarchy. The system takes care of distributing the messages arriving from a topic's multiple publishers to its multiple subscribers. Topics retain messages only as long as it takes to distribute them to current subscribers.
+
+Pub/sub messaging has the following characteristics.
+
+-   Each message can have multiple consumers.
+
+-   Publishers and subscribers have a timing dependency. A client that subscribes to a topic can consume only messages published after the client has created a subscription, and the subscriber must continue to be active in order for it to consume messages.
+
+The JMS API relaxes this timing dependency to some extent by allowing subscribers to create **durable subscriptions**, which receive messages sent while the subscribers are not active. Durable subscriptions provide the flexibility and reliability of queues but still allow clients to send messages to many recipients.
+
+Use pub/sub messaging when each message can be processed by any number of consumers (or none). Figure below illustrates pub/sub messaging
+
+*Publish/Subscribe Messaging*
+
+![Diagram of pub/sub messaging, showing Client 1 publishing a message to a topic, and the message being delivered to two subscribers to the topic](doc/jms-publishSubscribe.gif)
+
+#### Message Consumption
+
+Messaging products are inherently asynchronous: There is no fundamental timing dependency between the production and the consumption of a message. However, the JMS specification uses this term in a more precise sense. Messages can be consumed in either of two ways:
+
+-   **Synchronously**: A subscriber or a receiver explicitly fetches the message from the destination by calling the `receive` method. The `receive` method can block until a message arrives or can time out if a message does not arrive within a specified time limit.
+
+-   **Asynchronously**: A client can register a **message listener** with a consumer. A message listener is similar to an event listener. Whenever a message arrives at the destination, the JMS provider delivers the message by calling the listener's `onMessage` method, which acts on the contents of the message.
+
+####The JMS API Programming Model
+
+The basic building blocks of a JMS application are:
+
+-   Administered objects: connection factories and destinations
+
+-   Connections
+
+-   Sessions
+
+-   Message producers
+
+-   Message consumers
+
+-   Messages
+
+Figure below shows how all these objects fit together in a JMS client application.
+
+*The JMS API Programming Model*
+
+![Diagram of the JMS API programming model: connection factory, connection, session, message producer, message consumer, messages, and destinations](doc/jms-programmingModel.gif)
+
+[JMS](http://docs.oracle.com/javaee/6/tutorial/doc/bncdx.html)
+####Spring JMS Intro
+Spring provides a JMS integration framework that much like Spring's integration with JDBC. The JmsTemplate class is used for message production and synchronous message reception.
+
+**Note:** Instances of the JmsTemplate class are thread-safe once configured. 
+
+####Usage of Spring JMS
+
+-  ConnectionFactory
+-  Real ConnectionFactory by vendor
+-  Destination(queue/topic)
+-  MessageProducer
+-  MessageListener
+-  JMS container that holds connectionFactory, destination, messageListener
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:jms="http://www.springframework.org/schema/jms"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <context:component-scan base-package="org.meng.spring.jms.basic" />
+
+    <!-- jmsTemplate -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+    </bean>
+
+    <!-- spring's connection factory that hold and manage the real connection factory -->
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="targetConnectionFactory" />
+    </bean>
+
+    <!-- real connection factory by JMS vendor -->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+    <!-- message queue destination -->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>queue</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- message listener -->
+    <bean id="messageConsumerListener" class="org.meng.spring.jms.basic.MessageConsumerListener" />
+
+    <!-- listener container -->
+    <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="queueDestination" />
+        <property name="messageListener" ref="messageConsumerListener" />
+
+    </bean>
+
+</beans>
+```
+
+**MessageListener**
+```java
+package org.meng.spring.jms.basic;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+
+public class MessageConsumerListener implements MessageListener {
+    public void onMessage(Message message) {
+        try {
+            TextMessage text = (TextMessage) message;
+            System.out.println("Receive Message: " + text.getText());
+        } catch (JMSException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+}
+```
+**MessageProducer**
+```java
+package org.meng.spring.jms.basic;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MessageProducer {
+    @Autowired
+    private JmsTemplate jmsTemplate;
+    
+    public void sendMessage(Destination destination, final String message){
+        System.out.println("sending message-> "+ message);
+        jmsTemplate.send(destination, new MessageCreator() {
+            
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                // TODO Auto-generated method stub
+                return session.createTextMessage(message);
+            }
+        });
+    }
+    
+}
+
+
+```
